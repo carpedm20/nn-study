@@ -1,0 +1,9 @@
+local t = torch.Tensor(10,10)
+local t2 = torch.Tensor(10,10)
+
+t3 = t+ t2
+t:add(t2) -- don't need to allocate additional memory
+
+local t = torch.Tensor({{1,2,3},{4,5,6},{7,8,9}})
+
+-- List 3 expressions that can replace the first line below to slice (extract) the middle column from t:
