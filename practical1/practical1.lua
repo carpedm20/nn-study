@@ -1,4 +1,5 @@
-require('torch')
+-- What is the difference between a Tensor and a Storage?
+-- require('torch')
 
 local t = torch.Tensor(6,6)
 local t2 = torch.Tensor(6,6)
@@ -103,9 +104,37 @@ col = t[{{},2}]
 print(col)
 col = t[{{1,3},2}]
 print(col)
+col = t:index(2, torch.LongTensor{2}) -- arg #2 should be LongTensor. Tensor will not work.
+print(col)
+
+print("============")
 
 t[torch.lt(t,5)] = -2
 print(t)
 
 x = torch.rand(5,5)
 
+-- https://github.com/torch/torch7/blob/master/doc/tensor.md
+-- https://github.com/torch/torch7/blob/master/doc/maths.md
+
+print(x[1])
+print(torch.isTensor(x[1]))
+print(torch.isTensor(x[1][1]))
+
+print("============")
+
+print(x)
+print(x:index(2,torch.LongTensor{3,1}))
+
+print("============")
+print(x)
+print(x:gather(1, torch.LongTensor{{1, 2, 3, 4, 5}}))
+print(x:gather(1, torch.LongTensor{{4, 3, 1, 1, 4}}))
+print(x:gather(1, torch.LongTensor{{1, 2, 3, 4, 5}, {2, 3, 4, 5, 1}}))
+
+print(torch.LongTensor{2,2}) -- 2x1
+print(torch.LongTensor(2,2)) -- 2x2
+
+-- What is the difference between a Tensor and a Storage?
+--
+-- The actual data of a Tensor is contained into a Storage
