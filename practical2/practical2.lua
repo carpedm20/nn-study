@@ -98,13 +98,20 @@ for i = 1,(#data)[1] do
   print(string.format("%2d  %6.2f %6.2f", i, myPrediction[1], text[i]))
 end
 
--- least square solution
-theta = torch.inverse(data:transpose(1,2)*data)*data:transpose(1,2)*torch.DoubleTensor(text)
+-- least square solution (optimal solution)
+size = data:size()
+size[2] = size[2] + 1
+newData = torch.Tensor(size):fill(1)
+newData:narrow(2, 1, data:size()[2]):copy(data)
+X = newData:narrow(2,2,3)
+Y = newData:narrow(2,1,1)
+
+theta = torch.inverse(X:transpose(1,2)*X)*X:transpose(1,2)*Y
+theta:resize(3)
 
 print('id','approx','text')
 for i = 1,(#data)[1] do
-  local dataWithBias = data[i][{ {2,3} }]:resize(3)
-  dataWithBias[3] = 1
+  local dataWithBias = X[i]
   local myPrediction = dataWithBias*theta
   print(string.format("%2d  %6.2f %6.2f", i, myPrediction, text[i]))
 end
