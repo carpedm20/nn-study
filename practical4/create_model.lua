@@ -8,7 +8,7 @@ function create_model(opt)
 
   -- linear -> sigmoid/requ -> linear -> softmax
   local model = nn.Sequential()
-  model:aad(nn.Linear(n_inputs, embedding_dim))
+  model:add(nn.Linear(n_inputs, embedding_dim))
 
   if opt.nonlinearity_type == 'requ' then
     model:add(nn.ReQU())

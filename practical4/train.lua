@@ -45,5 +45,15 @@ function train(opt, data)
   }
 
   for i=1, opt.training_iterations do
-    local _, loss = optiim.adagrad(feval, params, optim_state)
+    local _, loss = optim.adagrad(feval, params, optim_state)
+    losses[#losses + 1] = loss[1]
+    
+    if i % opt.print_every == 0 then
+      print(string.format("iteration %4d, loss = %6.6f", i, loss[1]))
+    end
   end
+
+  return model, losses
+end
+
+return train

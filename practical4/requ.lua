@@ -5,6 +5,7 @@ local ReQU = torch.class('nn.ReQU', 'nn.Module')
 function ReQU:updateOutput(input)
   self.output:resizeAs(input):copy(input)
   -- do something
+  self.output = self.output * w + b
   return self.output
 end
 
