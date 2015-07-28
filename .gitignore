@@ -1,3 +1,7 @@
 *.csv
 *.gz
 *.t7*
+*.txt
+
+# Vim
+.*.sw[op]
