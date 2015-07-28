@@ -4,6 +4,8 @@ require 'nngraph'
 require 'optim'
 require 'lfs'
 
+local DataLoader = require 'DataLoader'
+local model_utils = require 'model_utils'
 local RNN = require 'RNN'
 
 cmd = torch.CmdLine()
@@ -51,7 +53,7 @@ if op.gpuid >= 0 then
   end
 end
 
-local loader = CharSplitLMMinibatchLoader.create(opt.data_dir, opt.batch_size, opt.seq_length, split_sizes)
+local loader = DataLoader.create(opt.data_dir, opt.batch_size, opt.seq_length, split_sizes)
 local vocab_size = loader.vocab_size
 local vocab = loader.vocab_mapping
 print('vocab size: ' .. vocab_size)
@@ -70,7 +72,7 @@ if string.len(opt.init_from) > 0 then
       break
     end
   end
-  assert(vocab_compatible, 'error, the character vocabulary for dataset and one for checkpoint are not the same')
+  assert(vocab_compatible, 'ERROR. the character vocabulary for dataset and one for checkpoint are not the same')
   print('overwritting state_size=' .. checkpoint.opt.state_size .. ', layer_size=' .. checkpoint.opt.layer_size .. ' from checkpoint model')
   opt.state_size = checkpoint.opt.state_size
   opt.layer_size = checkpoint.opt.layer_size
