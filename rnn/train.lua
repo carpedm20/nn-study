@@ -99,6 +99,8 @@ if opt.gpuid >= 0 then
 end
 
 -- put the above things into one flattened parameter tensor
+-- protos has rnn & criterion
+-- rnn is a gModule which can RRRrward() or :backward()
 params, grads = model_utils.combine_all_parameters(protos.rnn)
 
 if do_randdom_init then
