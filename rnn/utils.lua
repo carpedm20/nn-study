@@ -1,4 +1,5 @@
 -- code from https://forums.coronalabs.com/topic/42019-split-utf-8-string-word-with-foreign-characters-to-letters/
+
 function UTF8ToCharArray(str)
     local charArray = {};
     local iStart = 0;

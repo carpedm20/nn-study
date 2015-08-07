@@ -15,7 +15,7 @@ function model_utils.combine_all_parameters(...)
     local net_params, net_grads = networks[i]:parameters()
 
     if net_params then
-      for _, set paste in pairs(net_params) do
+      for _, p in pairs(net_params) do
         parameters[#parameters + 1] = p
       end
       for _, g in pairs(net_grads) do
@@ -26,14 +26,12 @@ function model_utils.combine_all_parameters(...)
 
   local function storageInSet(set, storage)
     -- [number] torch.pointer(object)
-    --
     -- Returns a unique id (pointer) of the given object, which can be a Torch object, a table, a thread or a function.
-    --
-    -- This is different from the class id returned by torch.id().
     local storageAndOffset = set[torch.pointer(storage)]
     if storageAndOffset == nil then
       return nil
     end
+    -- storages[torch.pointer(storage)] = {storage, nParameters}
     local _, offset = unpack(storageAndOffset)
     return offset
   end
@@ -43,7 +41,9 @@ function model_utils.combine_all_parameters(...)
     if not parameters or #parameters == 0 then
       return torch.Tensor()
     end
-    local Tensor = parameters[1].new -- ??? What parameters (?)
+    -- To begin flattening, start with first parameter
+    -- Initialize Tensor with the same size with first parameter
+    local Tensor = parameters[1].new 
 
     local storages = {}
     local nParameters = 0
